@@ -54,6 +54,7 @@ var (
 	crossArgs   = flag.String("depsargs", "", "CGO dependency configure arguments")
 	targets     = flag.String("targets", "*/*", "Comma separated targets to build for")
 	dockerImage = flag.String("image", "", "Use custom docker image instead of official distribution")
+	goProxy = flag.String("goproxy", "", "go proxy")
 )
 
 // ConfigFlags is a simple set of flags to define the environment and dependencies.
@@ -291,6 +292,7 @@ func compile(image string, config *ConfigFlags, flags *BuildFlags, folder string
 		"-e", "DEPS=" + config.Dependencies,
 		"-e", "ARGS=" + config.Arguments,
 		"-e", "OUT=" + config.Prefix,
+		"-e", "GOPROXY=https://goproxy.cn",
 		"-e", fmt.Sprintf("FLAG_V=%v", flags.Verbose),
 		"-e", fmt.Sprintf("FLAG_X=%v", flags.Steps),
 		"-e", fmt.Sprintf("FLAG_RACE=%v", flags.Race),
@@ -326,6 +328,7 @@ func compileContained(config *ConfigFlags, flags *BuildFlags, folder string) err
 		"DEPS=" + config.Dependencies,
 		"ARGS=" + config.Arguments,
 		"OUT=" + config.Prefix,
+		"GOPROXY=https://goproxy.cn",
 		fmt.Sprintf("FLAG_V=%v", flags.Verbose),
 		fmt.Sprintf("FLAG_X=%v", flags.Steps),
 		fmt.Sprintf("FLAG_RACE=%v", flags.Race),
